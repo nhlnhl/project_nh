@@ -117,7 +117,7 @@ if(!isset($_SESSION['login_user'])) {
               </div>
               <div class="row">
                 <div class="col">
-                  <a class="btn btn-primary" href="select_days.php">Write</a>
+                  <a class="btn btn-primary" href="write.php">Write</a>
                 </div>
               </div>
             </div>

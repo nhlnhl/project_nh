@@ -1,7 +1,7 @@
 <?php
-// if(!isset($_SESSION['login_user'])) {
-//     header("location: index.php");
-// }
+if(!isset($_SESSION['login_user'])) {
+    header("location: index.php");
+}
 
 ?>
 
@@ -51,7 +51,7 @@
 
         <!-- Write Column -->
         <div class="col-lg-8">
-          <form action="send_db.php" method="post" id="write_form">
+          <form action="send_post.php" method="post" id="write_form">
             <table class="my-4">
               <tr>
                 <td>
@@ -60,7 +60,7 @@
                 </td>
                 <td>
                   <label>Theme</label>
-                  <select class="form-comtrol" name="theme" id="theme"><option>Freinds<option>Family<option>Ocean<option>Photo</select>
+                  <select class="form-comtrol" name="theme" id="theme"><option>Friends<option>Family<option>Ocean<option>Photo</select>
                 </td>
               </tr>
               <tr>
@@ -91,33 +91,10 @@
                 </script>
                 </td>
               </tr>
-              <script>
-                var map = new Array();
-                var poly = new Array();
-              </script>
-              <?php
-                if($_SERVER["REQUEST_METHOD"] == "POST") {
-                  $days=addslashes($_POST['days']);
-              ?>
-                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeZibfZQe5ngRJF6h41_12BSknR4M4zRE"></script>
-              <?php
-                  for($i = 0; $i < $days; $i++) {
-                    ?>
-                    <tr>
-                      <td colspan="2">
-                        <?php
-                          include("day.php");
-                        ?>
-                      </td>
-                    </tr>
-                    <?php
-                  }
-                }
-              ?>
               <tr>
                 <td colspan="2">
                   <select class="form-comtrol" name="lock" id="lock"><option>Public<option>Friends<option>Only Me</select>
-                  <a class="btn btn-primary" href="send_db.php" value="Submit" onclick="submitContents(this)">Submit</a>
+                  <button class="btn btn-primary text-white" type="submit" onclick="submitContents(this)">Next</button>
                 </td>
               </tr>
             </table>
