@@ -11,7 +11,7 @@
     $myRegion=addslashes($_POST['region']);
     $myGender=addslashes($_POST['gender']);
 
-    $sql="SELECT NAME FROM USERS WHERE ID='$myID'";
+    $sql="SELECT name FROM user WHERE user_id='$myID'";
     $result=mysqli_query($bd, $sql);
     $count=mysqli_num_rows($result);
 

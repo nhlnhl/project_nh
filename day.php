@@ -63,7 +63,37 @@ if(!isset($_SESSION['login_user'])) {
   <body>
     <div class="col my-4">
       <label>Day <?php echo $i + 1; ?></label>
-      <div class="map" id="map[<?php echo $i; ?>]"></div>
+      <input class="form-comtrol" type="date" name="date[<?php echo $i; ?>]">
+      <label>Country</label>
+      <select class="form-comtrol" type="text" name="country[<?php echo $i; ?>]"><option>South Korea<option>Japan</select>
+      <label>Money</label>
+      <input class="form-comtrol" type="text" name="money[<?php echo $i; ?>]">
+      <select class="form-comtrol" type="text" name="money_unit[<?php echo $i; ?>]"><option>Won<option>Yen</select>
+      <div class="map" id="map[<?php echo $i; ?>]" name="map[<?php echo $i; ?>"]></div>
+      <textarea name="texteditor[<?php echo $i; ?>]" id="texteditor[<?php echo $i; ?>]" rows="10" cols="100" style="width:660px; height:500px;"></textarea>
+      <script type="text/javascript">
+          var oEditors = [];
+          nhn.husky.EZCreator.createInIFrame({
+              oAppRef: oEditors,
+              elPlaceHolder: "texteditor[<?php echo $i; ?>]",
+              sSkinURI: "./SmartEditor2Skin.html",
+              fCreator: "createSEditor2"
+          });
+
+          function submitContents(elClickedObj) {
+              oEditors.getById["texteditor[<?php echo $i; ?>]"].exec("UPDATE_CONTENTS_FIELD", []);
+
+              try {
+                  elClickedObj.form.submit();
+              } catch(e) {
+              }
+          }
+
+          function pasteHTML(filepath) {
+            var sHTML = '<img src="<%=request.getContextPath()%>' + filepath + '">';
+            oEditors.getById["textAreaContent"].exec("PASTE_HTML", [sHTML]);
+          }
+      </script>
       <script>initMap();</script>
     </div>
   </body>

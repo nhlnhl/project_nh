@@ -26,8 +26,6 @@ if(!isset($_SESSION['login_user'])) {
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="./js/service/HuskyEZCreator.js" charset="utf-8"></script>
 
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeZibfZQe5ngRJF6h41_12BSknR4M4zRE"></script>
-
   </head>
 
   <body>
@@ -56,8 +54,14 @@ if(!isset($_SESSION['login_user'])) {
           <form action="send_db.php" method="post" id="write_form">
             <table class="my-4">
               <tr>
-                <td><span style="width:30px; height:25px; font-size:10pt;">Title</span></td>
-                <td><input name="title" id="title" style="width:640px; height:25px;"/></td>
+                <td>
+                  <label>Title</label>
+                  <input class="form-comtrol" name="title" id="title" style="width:500px;"/>
+                </td>
+                <td>
+                  <label>Theme</label>
+                  <select class="form-comtrol" name="theme" id="theme"><option>Freinds<option>Family<option>Ocean<option>Photo</select>
+                </td>
               </tr>
               <tr>
                 <td colspan="2">
@@ -94,6 +98,9 @@ if(!isset($_SESSION['login_user'])) {
               <?php
                 if($_SERVER["REQUEST_METHOD"] == "POST") {
                   $days=addslashes($_POST['days']);
+              ?>
+                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeZibfZQe5ngRJF6h41_12BSknR4M4zRE"></script>
+              <?php
                   for($i = 0; $i < $days; $i++) {
                     ?>
                     <tr>
@@ -109,6 +116,7 @@ if(!isset($_SESSION['login_user'])) {
               ?>
               <tr>
                 <td colspan="2">
+                  <select class="form-comtrol" name="lock" id="lock"><option>Public<option>Friends<option>Only Me</select>
                   <a class="btn btn-primary" href="send_db.php" value="Submit" onclick="submitContents(this)">Submit</a>
                 </td>
               </tr>
