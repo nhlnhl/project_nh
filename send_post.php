@@ -9,13 +9,13 @@
       $lock = addslashes($_POST['lock']);
 
       $post_theme;
-      if($theme = "Friends")  {
+      if($theme == "Friends")  {
         $post_theme = 0;
       }
-      else if($theme = "Family")  {
+      else if($theme == "Family")  {
         $post_theme = 1;
       }
-      else if($theme = "Ocean") {
+      else if($theme == "Ocean") {
         $post_theme = 2;
       }
       else {
@@ -23,10 +23,10 @@
       }
 
       $post_lock;
-      if($lock = "Public")  {
+      if($lock == "Public")  {
         $post_lock = 0;
       }
-      else if($lock = "Friends")  {
+      else if($lock == "Friends")  {
         $post_lock = 1;
       }
       else {

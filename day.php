@@ -6,11 +6,26 @@ if(!isset($_SESSION['login_user'])) {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
   <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     <title>Project NH</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="post.css" rel="stylesheet">
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="./js/service/HuskyEZCreator.js" charset="utf-8"></script>
+
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -66,45 +81,148 @@ if(!isset($_SESSION['login_user'])) {
         count++;
       }
     </script>
+
   </head>
+
   <body>
-    <div class="col my-4">
-      <form action="send_day.php" method="post" id="day_form">
-        <label>Day</label>
-        <input class="form-comtrol" type="date" name="date">
-        <label>Country</label>
-        <select class="form-comtrol" type="text" name="country"><option>South Korea<option>Japan</select>
-        <label>Money</label>
-        <input class="form-comtrol" type="text" name="money">
-        <select class="form-comtrol" type="text" name="money_unit"><option>Won<option>Yen</select>
-        <div class="map" id="map" name="map"></div>
-        <textarea name="texteditor" id="texteditor" rows="10" cols="100" style="width:660px; height:500px;"></textarea>
-        <a class="btn btn-primary" href="send_day.php" value="Submit" onclick="submitContents(this)">Next</a>
-      </form>
-      <script type="text/javascript">
-          var oEditors = [];
-          nhn.husky.EZCreator.createInIFrame({
-              oAppRef: oEditors,
-              elPlaceHolder: "texteditor",
-              sSkinURI: "./SmartEditor2Skin.html",
-              fCreator: "createSEditor2"
-          });
 
-          function submitContents(elClickedObj) {
-              oEditors.getById["texteditor"].exec("UPDATE_CONTENTS_FIELD", []);
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.php">Project NH</a>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="logout.php">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-              try {
-                  elClickedObj.form.submit();
-              } catch(e) {
+    <!-- Page Content -->
+    <div class="container">
+
+      <div class="row">
+
+        <!-- Write Column -->
+        <div class="col my-4">
+          <form action="send_day.php" method="post" id="day_form">
+            <label>Day</label>
+            <input class="form-comtrol" type="date" name="date">
+            <label>Country</label>
+            <select class="form-comtrol" type="text" name="country"><option>South Korea<option>Japan</select>
+            <label>Money</label>
+            <input class="form-comtrol" type="text" name="money">
+            <div class="map" id="map" name="map"></div>
+            <textarea name="texteditor" id="texteditor" rows="10" cols="100" style="width:660px; height:500px;"></textarea>
+            <button class="btn btn-primary text-white" type="submit" name="action" value="Next" onclick="submitContents(this)">Next</button>
+            <button class="btn btn-primary text-white" type="submit" name="action" value="End" onclick="submitContents(this)">End</button>
+          </form>
+          <script type="text/javascript">
+              var oEditors = [];
+              nhn.husky.EZCreator.createInIFrame({
+                  oAppRef: oEditors,
+                  elPlaceHolder: "texteditor",
+                  sSkinURI: "./SmartEditor2Skin.html",
+                  fCreator: "createSEditor2"
+              });
+
+              function submitContents(elClickedObj) {
+                  oEditors.getById["texteditor"].exec("UPDATE_CONTENTS_FIELD", []);
+
+                  try {
+                      elClickedObj.form.submit();
+                  } catch(e) {
+                  }
               }
-          }
 
-          function pasteHTML(filepath) {
-            var sHTML = '<img src="<%=request.getContextPath()%>' + filepath + '">';
-            oEditors.getById["textAreaContent"].exec("PASTE_HTML", [sHTML]);
-          }
-      </script>
-      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeZibfZQe5ngRJF6h41_12BSknR4M4zRE&callback=initMap"></script>
+              function pasteHTML(filepath) {
+                var sHTML = '<img src="<%=request.getContextPath()%>' + filepath + '">';
+                oEditors.getById["textAreaContent"].exec("PASTE_HTML", [sHTML]);
+              }
+          </script>
+          <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeZibfZQe5ngRJF6h41_12BSknR4M4zRE&callback=initMap"></script>
+        </div>
+
+        <div class="col-md-4">
+
+          <!-- Side Widget -->
+          <div class="card my-4">
+            <h5 class="card-header"><?php echo $_SESSION['login_user']; ?></h5>
+            <div class="card-body">
+              <label>Welcome, <?php echo $_SESSION['login_user']; ?>!</label>
+            </div>
+          </div>
+
+          <!-- Search Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Search</h5>
+            <div class="card-body">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                  <button class="btn btn-secondary" type="button">Go!</button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Categories Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Categories</h5>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-6">
+                  <ul class="list-unstyled mb-0">
+                    <li>
+                      <a href="#">Okinawa</a>
+                    </li>
+                    <li>
+                      <a href="#">Hongkong</a>
+                    </li>
+                    <li>
+                      <a href="#">Friends</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-lg-6">
+                  <ul class="list-unstyled mb-0">
+                    <li>
+                      <a href="#">Photo</a>
+                    </li>
+                    <li>
+                      <a href="#">Kota Kinabalu</a>
+                    </li>
+                    <li>
+                      <a href="#">Ocean</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <!-- /.row -->
+
     </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
   </body>
+
 </html>
