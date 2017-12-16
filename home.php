@@ -128,7 +128,20 @@ if(!isset($_SESSION['login_user'])) {
             <h5 class="card-header">Search</h5>
             <div class="card-body">
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for...">
+                <input type="text" class="form-control" placeholder="Search for friends">
+                <span class="input-group-btn">
+                  <button class="btn btn-secondary" type="button" href="search_friend.php">Go!</button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Search</h5>
+            <div class="card-body">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for posts">
                 <span class="input-group-btn">
                   <button class="btn btn-secondary" type="button" href="search.php">Go!</button>
                 </span>
