@@ -130,7 +130,7 @@ if(!isset($_SESSION['login_user'])) {
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search for friends">
                 <span class="input-group-btn">
-                  <button class="btn btn-secondary" type="button" href="search_friend.php">Go!</button>
+                  <a class="btn btn-secondary" type="button" href="search_friend.php">Go!</a>
                 </span>
               </div>
             </div>
