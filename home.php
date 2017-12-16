@@ -143,7 +143,7 @@ if(!isset($_SESSION['login_user'])) {
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search for posts">
                 <span class="input-group-btn">
-                  <button class="btn btn-secondary" type="button" href="search.php">Go!</button>
+                  <a class="btn btn-secondary" type="button" href="search.php">Go!</a>
                 </span>
               </div>
             </div>
