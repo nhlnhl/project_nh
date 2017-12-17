@@ -47,11 +47,10 @@ $cate_name = mysqli_fetch_array($cate_list);
 	/* 검색 끝 */
 if($cate_id!=1)
 {
-  $sql = 'select count(*) as cnt from post' . $searchSql . '( post_theme = "'.$cate_id.'"and user_id = "'.$_SESSION['login_user'].'" or post_lock = 2 or (post_lock = 1 and user_id = (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (post_lock = 1 and user_id =(select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'")))';
+  $sql = 'select count(*) as cnt from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$_SESSION['login_user'].'" or post_lock = 2 or (post_lock = 1 and user_id IN (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (post_lock = 1 and user_id IN (select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'")))';
 }
 else {
-  $sql = 'select count(*) as cnt from post'. $searchSql.' (user_id = "'.$_SESSION['login_user'].'" or post_lock = 2 or (post_lock = 1 and user_id = (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (post_lock = 1 and user_id = (select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'")))';
-
+  $sql = 'select count(*) as cnt from post'. $searchSql.' (user_id = "'.$_SESSION['login_user'].'" or post_lock = 2 or (post_lock = 1 and user_id IN (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (post_lock = 1 and user_id IN (select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'")))';
 }
 
 		$result = $bd->query($sql);
@@ -60,11 +59,22 @@ else {
 		$allPost = $row['cnt']; //전체 게시글의 수
 
 		if(empty($allPost)) {
-			$emptyData = '<tr><td class="textCenter" colspan="5">글이 존재하지 않습니다.</td></tr>';
-			$paging = '<ul>';
+			$emptyData = '<div class="card mb-4 my-4">
+
+				<!-- <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap"> -->
+				<div class="card-body">
+					<h2 class="card-title">Empty Post</h2>
+					<p class="card-text">Blank</p>
+
+				</div>
+				<div class="card-footer text-muted">
+					Not Posted Yet!
+				</div>
+			</div>';
+			$paging = '<ul class="pagination justify-content-center mb-4">';
 			if($page == 1)
 			{
-					$paging .= '<li class="page current">1</li>';
+					$paging .= '<li class="page-item"><a class="page-link">1</a></li>';
 			}
 
 				$paging .= '</ul>';
@@ -111,7 +121,7 @@ $paging .= '<li class="page-item"><a class="page-link" href="./home.php?page=' .
 
 		for($i = $firstPage; $i <= $lastPage; $i++) {
 			if($i == $page) {
-				$paging .= '<li class="page-item">' . $i . '</li>';
+				$paging .= '<li class="page-item page-link">' . $i . '</li>';
 			} else {
 				$paging .= '<li class="page-item"><a class="page-link" href="./home.php?page=' . $i . $subString . '">' . $i . '</a></li>';
 			}
@@ -141,12 +151,12 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./ho
 
     if($cate_id!=1)
     {
-      $sql = 'select * from post ' . $searchSql .' (post_theme = "'.$cate_id.'" and user_id = "'.$_SESSION['login_user'].'" or post_lock = 2 or (post_lock = 1 and user_id = (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (post_lock = 1 and user_id =	(select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'")))'.' order by post_id desc ' . $sqlLimit; //원하는 개수만큼 가져온다. (0번째부터 20번째까지
-  		$sql2 = 'select * from post ' . $searchSql .' (post_theme = "'.$cate_id.'" and user_id = "'.$_SESSION['login_user'].'" or post_lock = 2 or (post_lock = 1 and user_id = (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (post_lock = 1 and user_id = (select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'")))'.' order by post_id desc'; //원하는 개수만큼 가져온다. (0번째부터 20번째까지
+      $sql = 'select * from post ' . $searchSql .' (post_theme = "'.$cate_id.'" and user_id = "'.$_SESSION['login_user'].'" or post_lock = 2 or (post_lock = 1 and user_id IN (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (post_lock = 1 and user_id IN	(select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'")))'.' order by post_id desc ' . $sqlLimit; //원하는 개수만큼 가져온다. (0번째부터 20번째까지
+  		$sql2 = 'select * from post ' . $searchSql .' (post_theme = "'.$cate_id.'" and user_id = "'.$_SESSION['login_user'].'" or post_lock = 2 or (post_lock = 1 and user_id IN (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (post_lock = 1 and user_id IN (select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'")))'.' order by post_id desc'; //원하는 개수만큼 가져온다. (0번째부터 20번째까지
     }
     else{
-      $sql = 'select * from post ' . $searchSql.' (user_id = "'.$_SESSION['login_user'].'" or post_lock = 2 or (post_lock = 1 and user_id = (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (post_lock = 1 and user_id = (select user2_id	from friendship where user1_id = "'.$_SESSION['login_user'].'")))'.' order by post_id desc' . $sqlLimit; //원하는 개수만큼 가져온다. (0번째부터 20번째까지
-  		$sql2 = 'select * from post ' . $searchSql .' (user_id = "'.$_SESSION['login_user'].'" or post_lock = 2 or (post_lock = 1 and user_id = (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (post_lock = 1 and user_id = (select user2_id from friendship	where user1_id = "'.$_SESSION['login_user'].'")))'.'order by post_id desc'; //원하는 개수만큼 가져온다. (0번째부터 20번째까지)
+      $sql = 'select * from post ' . $searchSql.' (user_id = "'.$_SESSION['login_user'].'" or post_lock = 2 or (post_lock = 1 and user_id IN (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (post_lock = 1 and user_id IN (select user2_id	from friendship where user1_id = "'.$_SESSION['login_user'].'")))'.' order by post_id desc' . $sqlLimit; //원하는 개수만큼 가져온다. (0번째부터 20번째까지
+  		$sql2 = 'select * from post ' . $searchSql .' (user_id = "'.$_SESSION['login_user'].'" or post_lock = 2 or (post_lock = 1 and user_id IN (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (post_lock = 1 and user_id IN (select user2_id from friendship	where user1_id = "'.$_SESSION['login_user'].'")))'.'order by post_id desc'; //원하는 개수만큼 가져온다. (0번째부터 20번째까지)
 	    }
 		$result = $bd->query($sql);
 		$result2 = $bd->query($sql2);
@@ -267,14 +277,16 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./ho
           <!-- Search Widget -->
           <div class="card my-4">
             <h5 class="card-header">Search Friends</h5>
-            <div class="card-body">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for friends">
-                <span class="input-group-btn">
-                  <a class="btn btn-secondary" type="button" href="search_friend.php">Go!</a>
-                </span>
-              </div>
-            </div>
+						<div class="card-body">
+							<div class="input-group">
+								<form class="form-control" action="./search_friend.php" method="get">
+								<input type="text" name="seachFriend" class="form-control" placeholder="Search for friends" value="<?php echo isset($searchFriend)?$searchFriend:null?>">
+								<span class="input-group-btn">
+									<button class="btn btn-secondary" type="submit">Go!</button>
+								</span>
+						</form>
+							</div>
+						</div>
           </div>
 
           <!-- Search Widget -->

@@ -3,7 +3,21 @@
 if(!isset($_SESSION['login_user'])) {
     header("location: index.php");
 }
+$id = $_GET['id'];
 
+	if(isset($_GET['cate_id']))
+	{
+		$cate_id = $_GET['cate_id'];
+	}
+	else {
+		$cate_id = 1;
+	}
+
+if($cate_id != 1)
+{
+$cate_list = mysqli_query($bd, "SELECT post_theme FROM theme WHERE post_theme = '$cate_id'");
+$cate_name = mysqli_fetch_array($cate_list);
+}
 	/* 페이징 시작 */
 		//페이지 get 변수가 있다면 받아오고, 없다면 1페이지를 보여준다.
 		if(isset($_GET['page'])) {
@@ -12,26 +26,51 @@ if(!isset($_SESSION['login_user'])) {
 			$page = 1;
 		}
 
+
 			/* 검색 끝 */
+
 		/* 검색 시작 */
 		$subString=null;
-		$searchFriend=null;
+		$searchText=null;
 
-	if(isset($_GET['searchFriend'])) {
+	if(isset($_GET['searchText'])) {
 
-		$searchFriend = $_GET['searchFriend'];
-		$subString .= '&amp;searchFriend=' . $searchFriend;
+		$searchText = $_GET['searchText'];
+		$subString .= '&amp;searchText=' . $searchText;
 	}
 
-	if(isset($searchFriend)) {
-		$searchSql = ' where user_id like "%' . $searchFriend . '%" or user_name like "%' . $searchFriend . '%" or ';
+	if(isset($searchText)) {
+		$searchSql = ' where post_title like "%' . $searchText . '%" or post_content like "%' . $searchText . '%" AND ';
 	} else {
 		$searchSql = ' WHERE ';
 	}
 
-	/* 검색 끝 */
+$sq = 'select count(*) as cnt from friendship where (user1_id = "'.$id.'" and user2_id = "'.$_SESSION['login_user'].'") or (user2_id = "'.$id.'" and user1_id = "'.$_SESSION['login_user'].'")';
+$re = $bd->query($sq);
+$r = $re->fetch_assoc();
 
-  $sql = 'select count(*) as cnt from user' . $searchSql . ' (user_id IN (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (user_id IN (select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'"))';
+$friend = $r['cnt']; //전체 게시글의 수
+
+if($friend == 0)
+{
+	if($cate_id!=1)
+	{
+	  $sql = 'select count(*) as cnt from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and post_lock = 2)';
+	}
+	else {
+	  $sql = 'select count(*) as cnt from post'. $searchSql.' (user_id = "'.$id.'" and post_lock = 2)';
+	}
+}
+else {
+	if($cate_id!=1)
+	{
+	  $sql = 'select count(*) as cnt from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and (post_lock = 2 or post_lock = 1))';
+		}
+	else {
+		$sql = 'select count(*) as cnt from post'. $searchSql.' (user_id = "'.$id.'" and (post_lock = 2 or post_lock = 1))';
+	}
+}
+	/* 검색 끝 */
 
 		$result = $bd->query($sql);
 		$row = $result->fetch_assoc();
@@ -39,22 +78,23 @@ if(!isset($_SESSION['login_user'])) {
 		$allPost = $row['cnt']; //전체 게시글의 수
 
 		if(empty($allPost)) {
-      $emptyData = '<div class="card mb-4 my-4">
+			// $emptyData = '<tr><td class="textCenter" colspan="5">글이 존재하지 않습니다.</td></tr>';
+			$emptyData = '<div class="card mb-4 my-4">
 
-        <!-- <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap"> -->
-        <div class="card-body">
-          <h2 class="card-title">No Friends</h2>
-          <p class="card-text">Empty friends</p>
+				<!-- <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap"> -->
+				<div class="card-body">
+					<h2 class="card-title">Empty Post</h2>
+					<p class="card-text">Blank</p>
 
-        </div>
-        <div class="card-footer text-muted">
-          Make your Friends!
-        </div>
-      </div>';
-		$paging = '<ul class="pagination justify-content-center mb-4">';
+				</div>
+				<div class="card-footer text-muted">
+					Not Posted Yet!
+				</div>
+			</div>';
+			$paging = '<ul class="pagination justify-content-center mb-4">';
 			if($page == 1)
 			{
-					$paging .='<li class="page-item"><a class="page-link">1</a></li>';
+					$paging .= '<li class="page-item"><a class="page-link">1</a></li>';
 			}
 
 				$paging .= '</ul>';
@@ -92,28 +132,28 @@ if(!isset($_SESSION['login_user'])) {
 
 		//첫 페이지가 아니라면 처음 버튼을 생성
 		if($page != 1) {
-$paging .= '<li class="page-item"><a class="page-link" href="./search_friend.php?page=1' . $subString . '">&larr; Pref</a></li>';
+$paging .= '<li class="page-item"><a class="page-link" href="./user.php?page=1' . $subString . '">&larr; Newer</a></li>';
 		}
 		//첫 섹션이 아니라면 이전 버튼을 생성
 		if($currentSection != 1) {
-$paging .= '<li class="page-item"><a class="page-link" href="./search_friend.php?page=' . $prevPage . $subString . '">&larr; Pref</a></li>';
+$paging .= '<li class="page-item"><a class="page-link" href="./user.php?page=' . $prevPage . $subString . '">&larr; Newer</a></li>';
 		}
 
 		for($i = $firstPage; $i <= $lastPage; $i++) {
 			if($i == $page) {
 				$paging .= '<li class="page-item page-link">' . $i . '</li>';
 			} else {
-				$paging .= '<li class="page-item"><a class="page-link" href="./search_friend.php?page=' . $i . $subString . '">' . $i . '</a></li>';
+				$paging .= '<li class="page-item"><a class="page-link" href="./user.php?page=' . $i . $subString . '">' . $i . '</a></li>';
 			}
 		}
 
 		//마지막 섹션이 아니라면 다음 버튼을 생성
 		if($currentSection != $allSection) {
-$paging .= '<li class="page page_next page-item"><a class="page-link" href="./search_friend.php?page=' . $nextPage . $subString . '">Next &rarr;</a></li>';		}
+$paging .= '<li class="page page_next page-item"><a class="page-link" href="./user.php?page=' . $nextPage . $subString . '">Older &rarr;</a></li>';		}
 
 		//마지막 페이지가 아니라면 끝 버튼을 생성
 		if($page != $allPage) {
-			$paging .= '<li class="page page_end page-item"><a class="page-link" href="./search_friend.php?page=' . $allPage . $subString . '">Next &rarr;</a></li>';
+			$paging .= '<li class="page page_end page-item"><a class="page-link" href="./user.php?page=' . $allPage . $subString . '">Older &rarr;</a></li>';
 		}
 
 
@@ -129,12 +169,35 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
 		$currentLimit = ($onePage * $page) - $onePage; //몇 번째의 글부터 가져오는지
 		$sqlLimit = ' limit ' . $currentLimit . ', ' . $onePage; //limit sql 구문
 
-    $sql = 'select * from user' . $searchSql . ' (user_id IN (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (user_id IN (select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'"))';
-    $sql2 = 'select * from user' . $searchSql . ' (user_id IN (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (user_id IN (select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'"))';
+		if($friend == 0)
+		{
+			if($cate_id!=1)
+			{
+			  $sql = 'select * from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and post_lock = 2)';
+			 	$sql2 = 'select * from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and post_lock = 2)';
+			}
+			else {
+			  $sql = 'select * from post'. $searchSql.' (user_id = "'.$id.'" and post_lock = 2)';
+				$sql2 = 'select * from post'. $searchSql.' (user_id = "'.$id.'" and post_lock = 2)';
+
+			}
+		}
+		else {
+			if($cate_id!=1)
+			{
+			  $sql = 'select * from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and (post_lock = 2 or post_lock = 1))';
+				$sql2 = 'select * from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and (post_lock = 2 or post_lock = 1))';
+
+				}
+			else {
+				$sql = 'select * from post'. $searchSql.' (user_id = "'.$id.'" and (post_lock = 2 or post_lock = 1))';
+				$sql2 = 'select * from post'. $searchSql.' (user_id = "'.$id.'" and (post_lock = 2 or post_lock = 1))';
+
+			}
+		}
 
 		$result = $bd->query($sql);
 		$result2 = $bd->query($sql2);
-
 }
 
 
@@ -192,18 +255,25 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
          							$virtual_bno =$num_rows - $onePage*($page-1);
          	          while($row = $result->fetch_assoc())
          	          {
+         	            $datetime = explode(' ', $row['post_date']);
+         	            $date = $datetime[0];
+         	            $time = $datetime[1];
+         	            if($date == Date('Y-m-d'))
+         	              $row['post_date'] = $time;
+         	            else
+         	              $row['post_date'] = $date;
          	        ?>
           <!-- Blog Post -->
           <div class="card mb-4 my-4">
 
             <!-- <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap"> -->
             <div class="card-body">
-              <h2 class="card-title"><?php echo $row['user_name']?></h2>
-              <p class="card-text"><?php echo $row['user_id'] ?></p>
-              <a href="user.php?id=<?php echo $row['user_id']?>" class="btn btn-primary">More about &rarr;</a>
+              <h2 class="card-title"><?php echo $row['post_title']?></h2>
+              <p class="card-text"><?php echo substr($row['post_content'], 0, 50)?></p>
+              <a href="post.php?bno=<?php echo $row['post_id']?>" class="btn btn-primary">Read More &rarr;</a>
             </div>
             <div class="card-footer text-muted">
-              Live in <?php echo $row['user_region']?>, <?php echo $row['user_country']?>
+              Posted on <?php echo $row['post_date']?>
             </div>
           </div>
           <?php
@@ -241,27 +311,38 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
             </div>
           </div>
 
-          <!-- Search Widget -->
-          <div class="card my-4">
-            <h5 class="card-header">Search Friends</h5>
-            <div class="card-body">
-              <div class="input-group">
-                <form class="form-control" action="./search_friend.php" method="get">
-                <input type="text" name="searchFriend" class="form-control" placeholder="Search for friends" value="<?php echo isset($searchFriend)?$searchFriend:null?>">
-                <span class="input-group-btn">
-                  <button class="btn btn-secondary" type="submit">Go!</button>
-                </span>
-            </form>
-              </div>
-            </div>
-          </div>
+					<!-- Side Widget -->
+					<div class="card my-4">
+						<h5 class="card-header"><?php echo $id; ?></h5>
+						<div class="card-body">
+							<div class="row">
+								<div class="col">
+									<label>It's <?php echo $id; ?>'s Page'!</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<? if($friend == 0)
+									{?>
+									<a class="btn btn-primary" href="add_friend.php?friend_id=<?php echo $id?>">Add Friend</a>
+								<? }
+									else{
+								?>
+								<a class="btn btn-primary" >We are Friend!</a>
+								<?
+								}
+								?>
+								</div>
+							</div>
+						</div>
+					</div>
 
           <!-- Search Widget -->
           <div class="card my-4" class="searchBox">
             <h5 class="card-header">Search Posts</h5>
             <div class="card-body">
               <div class="input-group">
-                    <form class="form-control" action="./home.php" method="get">
+                    <form class="form-control" action="./user.php" method="get">
                     <input type="text" name="searchText" class="form-control" placeholder="Search for posts" value="<?php echo isset($searchText)?$searchText:null?>">
                     <span class="input-group-btn">
                       <button class="btn btn-secondary" type="submit">Go!</button>
@@ -271,7 +352,7 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
             </div>
             <?php
             $cate_sql = mysqli_query($bd,"SELECT * FROM theme ORDER BY post_theme");
-            $index = 'home.php';
+            $index = 'user.php';
             ?>
           <!-- Categories Widget -->
           <div class="card my-4">
