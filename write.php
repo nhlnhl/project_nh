@@ -56,16 +56,11 @@ if(!isset($_SESSION['login_user'])) {
               <tr>
                 <td>
                   <label>Title</label>
-                  <input class="form-comtrol" name="title" id="title" style="width:500px;"/>
-                </td>
-                <td>
-                  <label>Theme</label>
-                  <select class="form-comtrol" name="theme" id="theme"><option>Friends<option>Family<option>Ocean<option>Photo<Option>Other</select>
-                  <input class="form-control" name="other" id="other"/>
+                  <input class="form-comtrol" name="title" id="title" style="width:640px;"/>
                 </td>
               </tr>
               <tr>
-                <td colspan="2">
+                <td>
                 <textarea name="texteditor" id="texteditor" rows="10" cols="100" style="width:660px; height:500px;"></textarea>
                 <script type="text/javascript">
                     var oEditors = [];
@@ -93,7 +88,10 @@ if(!isset($_SESSION['login_user'])) {
                 </td>
               </tr>
               <tr>
-                <td colspan="2">
+                <td>
+                  <label>Theme</label>
+                  <select class="form-comtrol" name="theme" id="theme"><option>Friends<option>Family<option>Ocean<option>Photo<Option>Other</select>
+                  <input class="form-comtrol" name="other" id="other" style="width:100px;"/>
                   <select class="form-comtrol" name="lock" id="lock"><option>Public<option>Friends<option>Only Me</select>
                   <button class="btn btn-primary text-white" type="submit" onclick="submitContents(this)">Next</button>
                 </td>

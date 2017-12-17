@@ -18,8 +18,27 @@
       else if($theme == "Ocean") {
         $post_theme = 2;
       }
-      else {
+      else if($theme == "Photo") {
         $post_theme = 3;
+      }
+      else {
+        $theme_name = addslashes($_POST['other']);
+
+        $sql = "SELECT post_theme FROM theme WHERE theme_name = '{$theme_name}'";
+        $result = mysqli_query($bd, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $post_theme = $row['post_theme'];
+
+        if(empty($post_theme))
+        {
+          $sql = "SELECT COUNT(*) AS cnt FROM theme";
+          $result = mysqli_query($bd, $sql);
+          $row = mysqli_fetch_assoc($result);
+          $post_theme = $row['cnt'];
+
+          $sql = "INSERT INTO theme(post_theme, theme_name) VALUES ($post_theme, '{$theme_name}')";
+          $result = mysqli_query($bd, $sql);
+        }
       }
 
       $post_lock;
