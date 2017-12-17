@@ -212,34 +212,34 @@ if(isset($_SESSION['login_user'])) {
           <form name="join_form" onsubmit="JavaScript: return submitCheck();" action="./join_check.php" method="POST">
             <div class="col my-4">
               <label>Name</label>
-              <input class="form-comtrol" type="text" name="name" onBlur="nameCheck();">
+              <input class="form-comtrol input-group" type="text" name="name" onBlur="nameCheck();">
               <p id="p_name">Must be at least 2 characters long. Only Korean.</p>
             </div>
             <div class="col my-4">
               <label>ID</label>
-              <input class="form-comtrol" type="text" name="id" onBlur="IDCheck();">
+              <input class="form-comtrol input-group" type="text" name="id" onBlur="IDCheck();">
               <p id="p_id">Use only small letters(a-z) and numbers(0-9). Must be at least 6 characters long and up to 12.</p>
             </div>
             <div class="col my-4">
               <label>PW</label>
-              <input class="form-comtrol" type="password" name="pw" onBlur="PWCheck();">
+              <input class="form-comtrol input-group" type="password" name="pw" onBlur="PWCheck();">
               <label>PW check</label>
-              <input class="form-comtrol" type="password" name="pw_check" onBlur="PWCheckCheck();">
+              <input class="form-comtrol input-group" type="password" name="pw_check" onBlur="PWCheckCheck();">
               <p id="p_pw">Use only small letters(a-z) and numbers(0-9). Must be at least 6 characters long and up to 12.</p>
             </div>
             <div class="col my-4">
               <label>Birthday</label>
-              <input class="form-comtrol" type="date" name="birthday"></input>
+              <input class="form-comtrol input-group" type="date" name="birthday"></input>
             </div>
             <div class="col my-4">
               <label>Country</label>
-              <select class="form-comtrol" type="text" name="country" id="country" onChange="countryChange();"><option>South Korea<option>Japan</select>
+              <select class="form-comtrol input-group" type="text" name="country" id="country" onChange="countryChange();"><option>South Korea<option>Japan</select>
               <label>Region</label>
-              <select class="form-comtrol" type="text" name="region" id="region"><option name="region_1">Seoul<option name="region_2">Suwon</select>
+              <select class="form-comtrol input-group" type="text" name="region" id="region"><option name="region_1">Seoul<option name="region_2">Suwon</select>
             </div>
             <div class="col my-4">
               <label>Gender</label>
-              <select class="form-comtrol" type="text" name="gender"><option>Female<option>Male</select>
+              <select class="form-comtrol input-group" type="text" name="gender"><option>Female<option>Male</select>
             </div>
             <div class="col my-4">
                 <button class="btn btn-primary text-white" type="submit">Join &raquo;</button>
