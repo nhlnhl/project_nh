@@ -60,7 +60,8 @@ if(!isset($_SESSION['login_user'])) {
                 </td>
                 <td>
                   <label>Theme</label>
-                  <select class="form-comtrol" name="theme" id="theme"><option>Friends<option>Family<option>Ocean<option>Photo</select>
+                  <select class="form-comtrol" name="theme" id="theme"><option>Friends<option>Family<option>Ocean<option>Photo<Option>Other</select>
+                  <input class="form-control" name="other" id="other"/>
                 </td>
               </tr>
               <tr>

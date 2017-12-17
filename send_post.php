@@ -24,16 +24,16 @@
 
       $post_lock;
       if($lock == "Public")  {
-        $post_lock = 0;
+        $post_lock = 2;
       }
       else if($lock == "Friends")  {
         $post_lock = 1;
       }
       else {
-        $post_lock = 2;
+        $post_lock = 0;
       }
 
-    $sql = "INSERT INTO post(user_id, post_date, post_content, post_theme, post_lock) VALUES ('{$_SESSION['login_user']}', NOW(), '{$content}', $post_theme, $post_lock)";
+    $sql = "INSERT INTO post(post_title, user_id, post_date, post_content, post_theme, post_lock) VALUES ('{$title}', '{$_SESSION['login_user']}', NOW(), '{$content}', $post_theme, $post_lock)";
     $send = mysqli_query($bd, $sql);
 
     if($send)
