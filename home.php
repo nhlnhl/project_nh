@@ -14,7 +14,7 @@ if(!isset($_SESSION['login_user'])) {
 
 if($cate_id != 1)
 {
-$cate_list = mysqli_query($db, "SELECT post_theme FROM theme WHERE post_theme = $cate_id");
+$cate_list = mysqli_query($bd, "SELECT post_theme FROM theme WHERE post_theme = $cate_id");
 $cate_name = mysqli_fetch_array($cate_list);
 }
 	/* 페이징 시작 */
@@ -49,7 +49,7 @@ else {
   $sql = 'select count(*) as cnt from user_post' . $searchSql;
 
 }
-		$result = $db->query($sql);
+		$result = $bd->query($sql);
 		$row = $result->fetch_assoc();
 
 		$allPost = $row['cnt']; //전체 게시글의 수
@@ -144,8 +144,8 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./in
   		$sql2 = 'select * from user_post' . $searchSql . 'order by b_no desc'; //원하는 개수만큼 가져온다. (0번째부터 20번째까지
 
     }
-		$result = $db->query($sql);
-		$result2 = $db->query($sql2);
+		$result = $bd->query($sql);
+		$result2 = $bd->query($sql2);
 
 }
 
@@ -287,7 +287,7 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./in
               </div>
             </div>
             <?php
-            $cate_sql = mysqli_query($db,"SELECT * FROM theme ORDER BY post_theme");
+            $cate_sql = mysqli_query($bd,"SELECT * FROM theme ORDER BY post_theme");
             $index = 'home.php';
             ?>
           <!-- Categories Widget -->
