@@ -14,7 +14,7 @@ if(!isset($_SESSION['login_user'])) {
 
 if($cate_id != 1)
 {
-$cate_list = mysqli_query($bd, "SELECT post_theme FROM theme WHERE post_theme = $cate_id");
+$cate_list = mysqli_query($bd, "SELECT post_theme FROM theme WHERE post_theme = '$cate_id'");
 $cate_name = mysqli_fetch_array($cate_list);
 }
 	/* 페이징 시작 */
@@ -24,6 +24,9 @@ $cate_name = mysqli_fetch_array($cate_list);
 		} else {
 			$page = 1;
 		}
+
+
+			/* 검색 끝 */
 
 		/* 검색 시작 */
 		$subString=null;
@@ -35,7 +38,7 @@ $cate_name = mysqli_fetch_array($cate_list);
 	}
 
 	if(isset($searchText)) {
-		$searchSql = ' where ' . $searchColumn . ' like "%' . $searchText . '%" AND ';
+		$searchSql = ' where post_title like "%' . $searchText . '%" or post_content like "%' . $searchText . '%" AND ';
 	} else {
 		$searchSql = ' WHERE ';
 	}
@@ -43,10 +46,18 @@ $cate_name = mysqli_fetch_array($cate_list);
 	/* 검색 끝 */
 if($cate_id!=1)
 {
-  $sql = 'select count(*) as cnt from user_post' . $searchSql . "post_theme = $cate_id";
+  $sql = 'select count(*) as cnt from post' . $searchSql . "post_theme = '$cate_id'"."and user_id = '$_SESSION['login_user']' or post_lock = 2 or (post_lock = 1 and user_id = (select user1_id
+from friendship where user2_id = '$_SESSION['login_user']')) or (post_lock = 1 and user_id =
+(select user2_id
+ from friendship
+where user1_id = '$_SESSION['login_user']'))";
 }
 else {
-  $sql = 'select count(*) as cnt from user_post' . $searchSql;
+  $sql = 'select count(*) as cnt from post' . $searchSql."user_id = '$_SESSION['login_user']' or post_lock = 2 or (post_lock = 1 and user_id = (select user1_id
+from friendship where user2_id = '$_SESSION['login_user']')) or (post_lock = 1 and user_id =
+(select user2_id
+ from friendship
+where user1_id = '$_SESSION['login_user']'))";;
 
 }
 		$result = $bd->query($sql);
@@ -136,12 +147,28 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./in
 
     if($cate_id!=1)
     {
-      $sql = 'select * from user_post' . $searchSql .  ' post_theme = '.$cate_id.' order by b_no desc' . $sqlLimit; //원하는 개수만큼 가져온다. (0번째부터 20번째까지
-  		$sql2 = 'select * from user_post' . $searchSql . ' post_theme = '.$cate_id.' order by b_no desc'; //원하는 개수만큼 가져온다. (0번째부터 20번째까지
+      $sql = 'select * from post' . $searchSql ."post_theme = '$cate_id'"."and user_id = '$_SESSION['login_user']' or post_lock = 2 or (post_lock = 1 and user_id = (select user1_id
+		from friendship where user2_id = '$_SESSION['login_user']')) or (post_lock = 1 and user_id =
+		(select user2_id
+		 from friendship
+		where user1_id = '$_SESSION['login_user']'))".' order by b_no desc' . $sqlLimit; //원하는 개수만큼 가져온다. (0번째부터 20번째까지
+  		$sql2 = 'select * from post' . $searchSql .  "post_theme = '$cate_id'"."and user_id = '$_SESSION['login_user']' or post_lock = 2 or (post_lock = 1 and user_id = (select user1_id
+		from friendship where user2_id = '$_SESSION['login_user']')) or (post_lock = 1 and user_id =
+		(select user2_id
+		 from friendship
+		where user1_id = '$_SESSION['login_user']'))".' order by b_no desc'; //원하는 개수만큼 가져온다. (0번째부터 20번째까지
     }
     else{
-      $sql = 'select * from user_post' . $searchSql .  'order by b_no desc' . $sqlLimit; //원하는 개수만큼 가져온다. (0번째부터 20번째까지
-  		$sql2 = 'select * from user_post' . $searchSql . 'order by b_no desc'; //원하는 개수만큼 가져온다. (0번째부터 20번째까지
+      $sql = 'select * from post' . $searchSql."user_id = '$_SESSION['login_user']' or post_lock = 2 or (post_lock = 1 and user_id = (select user1_id
+		from friendship where user2_id = '$_SESSION['login_user']')) or (post_lock = 1 and user_id =
+		(select user2_id
+		 from friendship
+		where user1_id = '$_SESSION['login_user']'))" .  'order by b_no desc' . $sqlLimit; //원하는 개수만큼 가져온다. (0번째부터 20번째까지
+  		$sql2 = 'select * from post' . $searchSql ."user_id = '$_SESSION['login_user']' or post_lock = 2 or (post_lock = 1 and user_id = (select user1_id
+		from friendship where user2_id = '$_SESSION['login_user']')) or (post_lock = 1 and user_id =
+		(select user2_id
+		 from friendship
+		where user1_id = '$_SESSION['login_user']'))" 'order by b_no desc'; //원하는 개수만큼 가져온다. (0번째부터 20번째까지
 
     }
 		$result = $bd->query($sql);
