@@ -14,7 +14,7 @@ if(!isset($_SESSION['login_user'])) {
 
 if($cate_id != 1)
 {
-$cate_list = mysqli_query($db, "SELECT post_theme FROM post WHERE post_theme = $cate_id");
+$cate_list = mysqli_query($db, "SELECT post_theme FROM theme WHERE post_theme = $cate_id");
 $cate_name = mysqli_fetch_array($cate_list);
 }
 	/* 페이징 시작 */
@@ -279,14 +279,17 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./in
             <div class="card-body">
               <div class="input-group">
                     <form action="./index.php" method="get">
-                <input type="text" name="searchText" class="form-control" placeholder="Search for posts" value="<?php echo isset($searchText)?$searchText:null?>">
-                <span class="input-group-btn">
-                  <button class="btn btn-secondary" type="submit">Go!</button>
-                </span>
+                    <input type="text" name="searchText" class="form-control" placeholder="Search for posts" value="<?php echo isset($searchText)?$searchText:null?>">
+                    <span class="input-group-btn">
+                      <button class="btn btn-secondary" type="submit">Go!</button>
+                    </span>
                 </form>
               </div>
             </div>
-
+            <?php
+            $cate_sql = mysqli_query($db,"SELECT * FROM theme ORDER BY post_theme");
+            $index = 'home.php';
+            ?>
           <!-- Categories Widget -->
           <div class="card my-4">
             <h5 class="card-header">Categories</h5>
@@ -294,29 +297,12 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./in
               <div class="row">
                 <div class="col-lg-6">
                   <ul class="list-unstyled mb-0">
-                    <li>
-                      <a href="#">Okinawa</a>
-                    </li>
-                    <li>
-                      <a href="#">Hongkong</a>
-                    </li>
-                    <li>
-                      <a href="#">Friends</a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-lg-6">
-                  <ul class="list-unstyled mb-0">
-                    <li>
-                      <a href="#">Photo</a>
-                    </li>
-                    <li>
-                      <a href="#">Kota Kinabalu</a>
-                    </li>
-                    <li>
-                      <a href="#">Ocean</a>
-                    </li>
-                  </ul>
+                    <?php
+                   while($cate_row = mysqli_fetch_array($cate_sql))
+                   {
+                     $bo_type = $cate_row['post_theme'];
+                     echo "<li> <a href=$index?cate_id=$bo_type>" . $cate_row['theme_name'] . "</a></li>";
+                   }?>
                 </div>
               </div>
             </div>
@@ -333,7 +319,7 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./in
     <!-- Footer -->
     <footer class="py-5 bg-dark">
       <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Project NH 2017</p>
       </div>
       <!-- /.container -->
     </footer>
