@@ -138,7 +138,17 @@ if(!isset($_SESSION['login_user'])) {
               function submitContents(elClickedObj) {
                   oEditors.getById["texteditor"].exec("UPDATE_CONTENTS_FIELD", []);
 
-                  map.data.toGeoJson(save_markers);
+                  //map.data.toGeoJson(save_markers);
+                  var markers = new Array();
+                  for(var i = 0; i < count; i++) {
+                    var lat = marker[i].position.lat();
+                    var lng = marker[i].position.lng();
+                    var name = toString(marker[i].title);
+                    var obj = {"lat": lat, "lng": lng, "name": name};
+                    markers[i] = obj;
+                  }
+
+                  save_markers(markers);
 
                   try {
                       //elClickedObj.form.submit();
