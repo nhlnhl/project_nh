@@ -23,7 +23,7 @@ if(!isset($_SESSION['login_user'])) {
 		$subString .= '&amp;searchFriend=' . $searchFriend;
 	}
 
-	if(isset($searchFriend)) {
+	if(isset($searchFriend) && $searchFriend != NULL) {
 		$searchSql = ' where user_id like "%' . $searchFriend . '%" or user_name like "%' . $searchFriend . '%" or ';
 	} else {
 		$searchSql = ' WHERE ';
@@ -132,7 +132,7 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
     $sql = 'select * from user' . $searchSql . ' (user_id IN (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (user_id IN (select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'"))';
     $sql2 = 'select * from user' . $searchSql . ' (user_id IN (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (user_id IN (select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'"))';
 
-		$sq2 = 'select * from user';
+		$sq2 = 'select * from user where user_id != "'.$_SESSION['login_user'].'"';
 		$re2 = $bd->query($sq2);
 
 
@@ -140,11 +140,12 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
 
 		while($r2 = $re2->fetch_assoc())
 	{
+
 			$sq = 'select count(*) as cnt from friendship where (user1_id = "'.$r2['user_id'].'" and user2_id = "'.$_SESSION['login_user'].'") or (user2_id = "'.$r2['user_id'].'" and user1_id = "'.$_SESSION['login_user'].'")';
 			$re = $bd->query($sq);
 			$r = $re->fetch_assoc();
 
-			if($r == 0)
+			if($r['cnt'] == 0)
 			{
 				$sq1 = 'select user_region from user where user_id = "'.$r2['user_id'].'"';
 				$re1 = $bd->query($sq1);
@@ -231,6 +232,8 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
          							$virtual_bno =$num_rows - $onePage*($page-1);
          	          while($row = $result->fetch_assoc())
          	          {
+											if($row['user_id'] != $_SESSION['login_user'])
+											{
          	        ?>
           <!-- Blog Post -->
 
@@ -249,6 +252,7 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
           <?php
        	          }
        					}
+							}
        	        ?>
 							<hr>
 							<p class="lead"> Meet New Friends! </p>
@@ -265,6 +269,8 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
 
 							while($row2 = $result3->fetch_assoc())
 							{
+								if($row2['user_id'] != $_SESSION['login_user'])
+								{
 							?>
 							<!-- Blog Post -->
 
@@ -282,6 +288,7 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
 							</div>
 							<?php
 							}
+						}
 							}
 						}else {
 						}
