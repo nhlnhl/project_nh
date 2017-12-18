@@ -49,7 +49,7 @@
 
       <div class="row">
         <div class="col-lg-8">
-          <form action="write.php" method="post">
+          <form action="write_post.php" method="post">
             <div class="col my-4">
               <label>Number of days</label>
               <input class="form-comtrol" type="text" name="days">

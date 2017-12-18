@@ -49,7 +49,7 @@ if(!isset($_SESSION['login_user'])) {
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
           zoom: 7,
-          center: {lat: 41.879, lng: -87.624}  // Center the map on Chicago, USA.
+          center: {lat: 37.35, lng: 127}  // Korea
         });
 
         poly = new google.maps.Polyline({

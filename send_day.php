@@ -31,10 +31,10 @@
         $lat = $marker[$i]->lat;
         $lng = $marker[$i]->lng;
         $name = $marker[$i]->name;
-        $sql = "INSERT INTO marker(itinerary_id, marker_lat, marker_lng, marker_name) VALUES ($itinerary_id, $lat, $lng, '$name')";
+        $sql = "INSERT INTO marker(itinerary_id, marker_lat, marker_lng, marker_name) VALUES ($itinerary_id, $lat, $lng, '{$name}')";
         $send = mysqli_query($bd, $sql);
       }
-/*
+
       if($send)
       {
         if ($_POST['action'] == 'Next') {
@@ -46,6 +46,5 @@
       }
       else
         echo "fail";
-        */
     }
 ?>

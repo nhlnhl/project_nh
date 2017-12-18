@@ -17,7 +17,7 @@ $sql = 'select * from day where itinerary_id = ' . $itinerary_id;
 		$result2 = $bd->query($sql2);
 
 		$row2 = $result2->fetch_assoc();
-		
+
 		$sql3 = 'select * from day where post_id = '.$row['post_id'];
 		$result3 = $bd->query($sql3);
 		if(!$result3)
@@ -46,6 +46,91 @@ $sql = 'select * from day where itinerary_id = ' . $itinerary_id;
     <!-- Custom styles for this template -->
     <link href="post.css" rel="stylesheet">
 
+		<style>
+			/* Always set the map height explicitly to define the size of the div
+			 * element that contains the map. */
+			.map {
+				width:660px;
+				height:500px;
+			}
+		</style>
+
+		<script>
+
+			// This example creates an interactive map which constructs a polyline based on
+			// user clicks. Note that the polyline only appears once its path property
+			// contains two LatLng coordinates.
+
+			var map;
+			var poly;
+			var marker = new Array();
+			var count = 0;
+
+			function initMap() {
+				map = new google.maps.Map(document.getElementById('map'), {
+					zoom: 7,
+					center: {lat: 37.35, lng: 127}  // Korea
+				});
+
+				poly = new google.maps.Polyline({
+					strokeColor: '#000000',
+					strokeOpacity: 1.0,
+					strokeWeight: 3
+				});
+				poly.setMap(map);
+
+				<?php
+					$sql = 'SELECT * FROM marker WHERE itinerary_id = ' .$itinerary_id;
+					$result = $bd->query($sql);
+
+					while($row4 = $result->fetch_assoc())
+					{
+						?>
+						var myLat = <?php echo $row4['marker_lat']; ?>;
+						var myLng = <?php echo $row4['marker_lng']; ?>;
+						var myLatLng = new google.maps.LatLng(myLat, myLng);
+
+						console.log(myLat);
+						console.log(myLng);
+
+						var path = poly.getPath();
+
+						path.push(myLatLng);
+
+						marker[count] = new google.maps.Marker({
+							position: myLatLng,
+							title: '#' + path.getLength(),
+							map: map
+						});
+
+						count++;
+						<?php
+					}
+				?>
+				// Add a listener for the click event
+				//map.addListener('click', addLatLng);
+			}
+
+			// Handles click events on a map, and adds a new point to the Polyline.
+			/*
+			function addLatLng(event) {
+				var path = poly.getPath();
+
+				// Because path is an MVCArray, we can simply append a new coordinate
+				// and it will automatically appear.
+				path.push(event.latLng);
+
+				// Add a new marker at the new plotted point on the polyline.
+				marker[count] = new google.maps.Marker({
+					position: event.latLng,
+					title: '#' + path.getLength(),
+					map: map
+				});
+
+				count++;
+			}
+			*/
+		</script>
   </head>
 
   <body>
@@ -107,13 +192,14 @@ $sql = 'select * from day where itinerary_id = ' . $itinerary_id;
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat totam sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p>
 
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p> -->
-          <p><?php echo $row['post_content']?>  </p>
+          <p><?php echo $row['day_content']?>  </p>
           <hr>
 					<p class="mb-0">Triped in <?php echo $row['day_country']?></p>
 					<hr>
 					  <p class="mb-0">Triped on <?php echo $row['day_date']?></p>
 					<hr>
-					여기에 map 정보
+						<div class="map" id="map" name="map"></div>
+						<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeZibfZQe5ngRJF6h41_12BSknR4M4zRE&callback=initMap"></script>
 					<hr>
 					<p>Spend Cost : <?php echo $row['day_money']?>  </p>
 					<hr>

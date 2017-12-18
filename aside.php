@@ -13,7 +13,7 @@
       </div>
       <div class="row">
         <div class="col">
-          <a class="btn btn-primary" href="write.php">Write</a>
+          <a class="btn btn-primary" href="write_post.php">Write</a>
         </div>
       </div>
     </div>
