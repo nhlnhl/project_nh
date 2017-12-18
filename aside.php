@@ -3,7 +3,8 @@
 
   <!-- Side Widget -->
   <div class="card my-4">
-    <h5 class="card-header"><?php echo $_SESSION['login_user']; ?></h5>
+    <h5 class="card-header"><a href="user.php?id=<?php echo $_SESSION['login_user']?>"><?php echo $_SESSION['login_user']; ?> </a></h5>
+
     <div class="card-body">
       <div class="row">
         <div class="col">
