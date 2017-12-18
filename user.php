@@ -340,7 +340,90 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./us
 
         </div>
 
-  <?php include("aside.php"); ?>
+				<!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+
+          <!-- Side Widget -->
+          <div class="card my-4">
+            <h5 class="card-header"><?php echo $_SESSION['login_user']; ?></h5>
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <label>Welcome, <?php echo $_SESSION['login_user']; ?>!</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <a class="btn btn-primary" href="write.php">Write</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+					<!-- Side Widget -->
+					<div class="card my-4">
+						<h5 class="card-header"><?php echo $id; ?></h5>
+						<div class="card-body">
+							<div class="row">
+								<div class="col">
+									<label>It's <?php echo $id; ?>'s Page'!</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<? if($friend == 0)
+									{?>
+									<a class="btn btn-primary" href="add_friend.php?friend_id=<?php echo $id?>">Add Friend</a>
+								<? }
+									else{
+								?>
+								<a class="btn btn-primary" >We are Friend!</a>
+								<?
+								}
+								?>
+								</div>
+							</div>
+						</div>
+					</div>
+
+          <!-- Search Widget -->
+          <div class="card my-4" class="searchBox">
+            <h5 class="card-header">Search Posts</h5>
+            <div class="card-body">
+              <div class="input-group">
+                    <form class="form-control" action="./user.php" method="get">
+                    <input type="text" name="searchText" class="form-control" placeholder="Search for posts" value="<?php echo isset($searchText)?$searchText:null?>">
+                    <span class="input-group-btn">
+                      <button class="btn btn-secondary" type="submit">Go!</button>
+                    </span>
+                </form>
+              </div>
+            </div>
+            <?php
+            $cate_sql = mysqli_query($bd,"SELECT * FROM theme ORDER BY post_theme");
+            $index = 'user.php';
+            ?>
+          <!-- Categories Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Categories</h5>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-6">
+                  <ul class="list-unstyled mb-0">
+                    <?php
+                   while($cate_row = mysqli_fetch_array($cate_sql))
+                   {
+                     $bo_type = $cate_row['post_theme'];
+                     echo "<li> <a href=$index?cate_id=$bo_type>" . $cate_row['theme_name'] . "</a></li>";
+                   }?>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
       <!-- /.row -->
 
     </div>
