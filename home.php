@@ -9,13 +9,13 @@ if(!isset($_SESSION['login_user'])) {
 		$cate_id = $_GET['cate_id'];
 	}
 	else {
-		$cate_id = 1;
+		$cate_id = -1;
 	}
 
-if($cate_id != 1)
+if($cate_id != -1)
 {
-$cate_list = mysqli_query($bd, "SELECT post_theme FROM theme WHERE post_theme = '$cate_id'");
-$cate_name = mysqli_fetch_array($cate_list);
+	$cate_list = mysqli_query($bd, "SELECT post_theme FROM theme WHERE post_theme = '$cate_id'");
+	$cate_name = mysqli_fetch_array($cate_list);
 }
 	/* 페이징 시작 */
 		//페이지 get 변수가 있다면 받아오고, 없다면 1페이지를 보여준다.
