@@ -132,8 +132,43 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
     $sql = 'select * from user' . $searchSql . ' (user_id IN (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (user_id IN (select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'"))';
     $sql2 = 'select * from user' . $searchSql . ' (user_id IN (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (user_id IN (select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'"))';
 
+		$sq2 = 'select user_id from user';
+		$re2 = $bd->query($sq2);
+
+
+		$user2 = array();
+		while($r2 = $re2->fetch_assoc())
+	{
+			$sq = 'select count(*) as cnt from friendship where (user1_id = "'.$re2['user_id'].'" and user2_id = "'.$_SESSION['login_user'].'") or (user2_id = "'.$re2['user_id'].'" and user1_id = "'.$_SESSION['login_user'].'")';
+			$re = $bd->query($sq);
+			$r = $re->fetch_assoc();
+			if($r == 0)
+			{
+				$sq = 'select user_region from user where user_id = "'.$re2['user_id'].'"';
+				$re = $bd->query($sq);
+				$r = $re->fetch_assoc();
+
+				$sq3 = 'select user_region from user where user_id = "'.$_SESSION['login_user'].'"';
+				$re3 = $bd->query($sq3);
+				$r3 = $re3->fetch_assoc();
+				if($r['user_region'] == $r3['user_region'])
+				{
+					array_push($user2, $re['user_id']);
+				}
+			}
+	}
+		// for(int $i = 0; $i < count($user2); $i++)
+		// {
+		// 	$sql3 = 'select * from user where user_id = "'.$user[$i].'"';
+		// 	$result3 = $bd->query($sql3);
+		// }
+		// $sql3 = 'select * from user where user_id = "'.$user[$i].'"';
+
+		$friend = $r['cnt']; //전체 게시글의 수
 		$result = $bd->query($sql);
 		$result2 = $bd->query($sql2);
+
+		//$result3 = $bd->query($sql3);
 
 }
 
@@ -194,6 +229,7 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
          	          {
          	        ?>
           <!-- Blog Post -->
+
           <div class="card mb-4 my-4">
 
             <!-- <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap"> -->
@@ -210,8 +246,38 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
        	          }
        					}
        	        ?>
+							<hr>
+							<p class="lead"> Meet New Friends! </p>
 
+							<?php
 
+							for(int $i = 0; $i < count($user2); $i++)
+							{
+								$sql3 = 'select * from user where user_id = "'.$user[$i].'"';
+								$result3 = $bd->query($sql3);
+
+							while($row2 = $result3->fetch_assoc())
+							{
+							?>
+							<!-- Blog Post -->
+
+							<div class="card mb-4 my-4">
+
+							<!-- <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap"> -->
+							<div class="card-body">
+							<h2 class="card-title"><?php echo $row2['user_name']?></h2>
+							<p class="card-text"><?php echo $row2['user_id'] ?></p>
+							<a href="user.php?id=<?php echo $row2['user_id']?>" class="btn btn-primary">More about &rarr;</a>
+							</div>
+							<div class="card-footer text-muted">
+							Live in <?php echo $row2['user_region']?>, <?php echo $row['user_country']?>
+							</div>
+							</div>
+							<?php
+							}
+							}
+
+							?>
 
           <!-- Pagination -->
           <div class="paging">
