@@ -55,7 +55,7 @@ if($id != $_SESSION['login_user'])
 {
 	if($friend == 0)
 	{
-		if($cate_id!=1)
+		if($cate_id!=-1)
 		{
 		  $sql = 'select count(*) as cnt from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and post_lock = 2)';
 		}
@@ -64,7 +64,7 @@ if($id != $_SESSION['login_user'])
 		}
 	}
 	else {
-		if($cate_id!=1)
+		if($cate_id!=-1)
 		{
 		  $sql = 'select count(*) as cnt from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and (post_lock = 2 or post_lock = 1))';
 			}
@@ -75,7 +75,7 @@ if($id != $_SESSION['login_user'])
 }
 else {
 
-		if($cate_id!=1)
+		if($cate_id!=-1)
 		{
 			$sql = 'select count(*) as cnt from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'")';
 			}
@@ -187,7 +187,7 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./us
 		{
 		if($friend == 0)
 		{
-			if($cate_id!=1)
+			if($cate_id!=-1)
 			{
 			  $sql = 'select * from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and post_lock = 2)';
 			 	$sql2 = 'select * from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and post_lock = 2)';
@@ -199,7 +199,7 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./us
 			}
 		}
 		else {
-			if($cate_id!=1)
+			if($cate_id!=-1)
 			{
 			  $sql = 'select * from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and (post_lock = 2 or post_lock = 1))';
 				$sql2 = 'select * from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and (post_lock = 2 or post_lock = 1))';
@@ -213,7 +213,7 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./us
 		}
 	}
 	else {
-		if($cate_id!=1)
+		if($cate_id!=-1)
 		{
 			$sql = 'select * from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'")';
 			$sql2 = 'select * from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'")';
