@@ -1,4 +1,4 @@
-$myarray<?php
+<?php
 	require_once("config.php");
 if(!isset($_SESSION['login_user'])) {
     header("location: index.php");
@@ -284,7 +284,6 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
 							}
 							}
 						}else {
-							echo 'why??';
 						}
 
 							?>
