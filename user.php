@@ -132,7 +132,7 @@ else {
 
 		//첫 페이지가 아니라면 처음 버튼을 생성
 		if($page != 1) {
-$paging .= '<li class="page-item"><a class="page-link" href="./user.php?page=1' . $subString . '">&larr; Newer</a></li>';
+$paging .= '<li class="page-item"><a class="page-link" href="./user.php?page=1' . $subString . '">&larr; Beginning</a></li>';
 		}
 		//첫 섹션이 아니라면 이전 버튼을 생성
 		if($currentSection != 1) {
@@ -153,7 +153,7 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./us
 
 		//마지막 페이지가 아니라면 끝 버튼을 생성
 		if($page != $allPage) {
-			$paging .= '<li class="page page_end page-item"><a class="page-link" href="./user.php?page=' . $allPage . $subString . '">Older &rarr;</a></li>';
+			$paging .= '<li class="page page_end page-item"><a class="page-link" href="./user.php?page=' . $allPage . $subString . '">End &rarr;</a></li>';
 		}
 
 

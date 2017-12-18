@@ -6,7 +6,7 @@ if(!isset($_SESSION['login_user'])) {
 $post_id = $_GET['bno'];
 
 $sql = 'select * from post where post_id = ' . $post_id;
-	$result = $db->query($sql);
+	$result = $bd->query($sql);
   if(!$result)
 	{
 		echo '오류가 발생했습니다.';
