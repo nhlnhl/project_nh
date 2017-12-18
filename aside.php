@@ -1,3 +1,4 @@
+<?	require_once("config.php"); ?>
 <!-- Sidebar Widgets Column -->
 <div class="col-md-4">
 
