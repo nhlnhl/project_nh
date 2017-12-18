@@ -51,12 +51,12 @@ if(!isset($_SESSION['login_user'])) {
 
         <!-- Write Column -->
         <div class="col-lg-8">
-          <form action="send_post.php" method="post" id="write_form">
+          <form action="send_post.php" method="post" id="post_form">
             <table class="my-4">
               <tr>
                 <td>
                   <label>Title</label>
-                  <input class="form-comtrol" name="title" id="title" style="width:640px;"/>
+                  <input class="form-comtrol" name="title" id="title" style="width:640px;" required/>
                 </td>
               </tr>
               <tr>
@@ -83,6 +83,8 @@ if(!isset($_SESSION['login_user'])) {
                     function pasteHTML(filepath) {
                       var sHTML = '<img src="<%=request.getContextPath()%>' + filepath + '">';
                       oEditors.getById["textAreaContent"].exec("PASTE_HTML", [sHTML]);
+
+                      //document.getElementById("img").value = String(sHTML);
                     }
                 </script>
                 </td>
@@ -93,6 +95,7 @@ if(!isset($_SESSION['login_user'])) {
                   <select class="form-comtrol" name="theme" id="theme"><option>Friends<option>Family<option>Ocean<option>Photo<Option>Other</select>
                   <input class="form-comtrol" name="other" id="other" style="width:100px;"/>
                   <select class="form-comtrol" name="lock" id="lock"><option>Public<option>Friends<option>Only Me</select>
+                  <!--input class="form-comtrol" type="hidden" id="img" name="img"-->
                   <button class="btn btn-primary text-white" type="submit" onclick="submitContents(this)">Next</button>
                 </td>
               </tr>

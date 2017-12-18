@@ -107,7 +107,7 @@ if(!isset($_SESSION['login_user'])) {
 
         <!-- Write Column -->
         <div class="col my-4">
-          <form action="send_day.php" method="post" id="day_form">
+          <form action="send_day.php" method="post" id="day_form" onsubmit="temp()">
             <label>Day</label>
             <input class="form-comtrol" type="date" name="date">
             <label>Country</label>
@@ -115,12 +115,13 @@ if(!isset($_SESSION['login_user'])) {
             <label>Money</label>
             <input class="form-comtrol" type="text" name="money">
             <div class="map" id="map" name="map"></div>
-            <input class="form-comtrol" type="hidden" name="markers">
+            <input class="form-comtrol" type="hidden" id="markers" name="markers">
             <textarea name="texteditor" id="texteditor" rows="10" cols="100" style="width:660px; height:500px;"></textarea>
-            <button class="btn btn-primary text-white" type="submit" name="action" value="Next" onclick="submitContents(this)">Next</button>
-            <button class="btn btn-primary text-white" type="submit" name="action" value="End" onclick="submitContents(this)">End</button>
+            <input class="btn btn-primary text-white" type="button" name="action" value="Next" onclick="submitContents(this)">
+            <input class="btn btn-primary text-white" type="button" name="action" value="End" onclick="submitContents(this)">
           </form>
           <script type="text/javascript">
+          function temp () { return false;}
               var oEditors = [];
               nhn.husky.EZCreator.createInIFrame({
                   oAppRef: oEditors,
@@ -129,13 +130,33 @@ if(!isset($_SESSION['login_user'])) {
                   fCreator: "createSEditor2"
               });
 
+              function save_markers(json) {
+                day_form.markers.value = JSON.stringify(json);
+                day_form.submit();
+              }
+
               function submitContents(elClickedObj) {
                   oEditors.getById["texteditor"].exec("UPDATE_CONTENTS_FIELD", []);
 
+                  map.data.toGeoJson(save_markers);
+
                   try {
-                      elClickedObj.form.submit();
+                      //elClickedObj.form.submit();
                   } catch(e) {
                   }
+                  /*
+                  var markers = new Array();
+
+                  for(var i = 0; i < count; i++)
+                  {
+                    var lat = marker[i].position.latLng;
+                    var lng = marker[i].position.latLng;
+                    var name = marker[i].title;
+                    var obj = {"lat": lat.toString(), "lng": lng.toString(), "name": name.toString()};
+                    markers[i] = obj;
+                  }
+                  */
+                  //day_form.markers.value = JSON.stringify(markers);
               }
 
               function pasteHTML(filepath) {

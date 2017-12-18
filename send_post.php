@@ -7,6 +7,7 @@
       $theme = addslashes($_POST['theme']);
       $content = addslashes($_POST['texteditor']);
       $lock = addslashes($_POST['lock']);
+      //$img = addslashes($_POST['img']);
 
       $post_theme;
       if($theme == "Friends")  {
@@ -56,7 +57,7 @@
     $send = mysqli_query($bd, $sql);
 
     if($send)
-      header("Location: day.php");
+      header("Location: write_day.php");
     else
       echo "fail";
     }
