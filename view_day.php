@@ -4,22 +4,26 @@ if(!isset($_SESSION['login_user'])) {
     header("location: index.php");
 }
 
-$post_id = $_GET['bno'];
+$itinerary_id = $_GET['dayno'];
 
-$sql = 'select * from post where post_id = ' . $post_id;
+$sql = 'select * from day where itinerary_id = ' . $itinerary_id;
 	$result = $bd->query($sql);
   if(!$result)
 	{
 		echo '오류가 발생했습니다.';
 	}
 	$row = $result->fetch_assoc();
+	$sql2 = 'select * from post where post_id = ' .$row['post_id'];
+		$result2 = $bd->query($sql2);
 
-	$sql2 = 'select * from day where post_id = '.$post_id;
-	$result2 = $bd->query($sql2);
-	if(!$result2)
-	{
-		echo '오류가 발생했습니다.';
-	}
+		$row2 = $result2->fetch_assoc();
+		$sql3 = 'select * from day where post_id = '.$row['post_id'];
+		$result2 = $bd->query($sql3);
+		if(!$result3)
+		{
+			echo '오류가 발생했습니다.';
+		}
+
 ?>
 
 
@@ -68,18 +72,18 @@ $sql = 'select * from post where post_id = ' . $post_id;
         <div class="col-lg-8">
 
           <!-- Title -->
-          <h1 class="mt-4"><?php echo $row['post_title']?></h1>
+          <h1 class="mt-4"><?php echo $row2['post_title']?></h1>
 
           <!-- Author -->
           <p class="lead">
             by
-            <a href="user.php?id=<?php echo $row['user_id']?>"><?php echo $row['user_id']?></a>
+            <a href="user.php?id=<?php echo $row2['user_id']?>"><?php echo $row2['user_id']?></a>
           </p>
 
           <hr>
 
           <!-- Date/Time -->
-          <p>Posted on <?php echo $row['post_date']?></p>
+          <p>Posted on <?php echo $row2['post_date']?></p>
 
           <hr>
 
@@ -104,12 +108,20 @@ $sql = 'select * from post where post_id = ' . $post_id;
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p> -->
           <p><?php echo $row['post_content']?>  </p>
           <hr>
+					<p class="mb-0">Triped in <?php echo $row['day_country']?></p>
+					<hr>
+					  <p class="mb-0">Triped on <?php echo $row['day_date']?></p>
+					<hr>
+					여기에 map 정보
+					<hr>
+					<p>Spend Cost : <?php echo $row['day_money']?>  </p>
+					<hr>
 					<?php
 					$i=0;
-					while($row2 = $result2->fetch_assoc())
-				 	          { $i++;
+					while($row3 = $result3->fetch_assoc())
+										{ $i++;
 					 ?>
-					  <a href="view_day.php?dayno=<?php echo $row2['itinerary_id']?>" class="btn btn-primary"> DAY <?echo $i; ?></a>
+						<a href="view_day.php?dayno=<?php echo $row3['itinerary_id']?>" class="btn btn-primary"> DAY <?echo $i; ?></a>
 
 					<? } ?>
         </div>
