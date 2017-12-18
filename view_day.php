@@ -17,8 +17,9 @@ $sql = 'select * from day where itinerary_id = ' . $itinerary_id;
 		$result2 = $bd->query($sql2);
 
 		$row2 = $result2->fetch_assoc();
+		
 		$sql3 = 'select * from day where post_id = '.$row['post_id'];
-		$result2 = $bd->query($sql3);
+		$result3 = $bd->query($sql3);
 		if(!$result3)
 		{
 			echo '오류가 발생했습니다.';
