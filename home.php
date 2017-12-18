@@ -229,7 +229,14 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./ho
           <!-- Blog Post -->
           <div class="card mb-4 my-4">
 
-            <!-- <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap"> -->
+            <img class="card-img-top" src="<?php if($row['post_img']==NULL)		{ echo
+							http://placehold.it/750x300 ?>
+							<?php
+						}
+						else {
+							echo $row['post_img']
+						}
+						?>	" alt="Card image cap">			
             <div class="card-body">
               <h2 class="card-title"><?php echo $row['post_title']?></h2>
               <p class="card-text"><?php echo substr($row['post_content'], 0, 50)?></p>
