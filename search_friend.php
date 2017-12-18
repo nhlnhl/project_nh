@@ -1,4 +1,4 @@
-<?php
+$myarray<?php
 	require_once("config.php");
 if(!isset($_SESSION['login_user'])) {
     header("location: index.php");
@@ -132,32 +132,36 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
     $sql = 'select * from user' . $searchSql . ' (user_id IN (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (user_id IN (select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'"))';
     $sql2 = 'select * from user' . $searchSql . ' (user_id IN (select user1_id from friendship where user2_id = "'.$_SESSION['login_user'].'")) or (user_id IN (select user2_id from friendship where user1_id = "'.$_SESSION['login_user'].'"))';
 
-		$sq2 = 'select user_id from user';
+		$sq2 = 'select * from user';
 		$re2 = $bd->query($sq2);
 
 
-		$user2 = array();
+		$myarray = array();
+
 		while($r2 = $re2->fetch_assoc())
 	{
-			$sq = 'select count(*) as cnt from friendship where (user1_id = "'.$re2['user_id'].'" and user2_id = "'.$_SESSION['login_user'].'") or (user2_id = "'.$re2['user_id'].'" and user1_id = "'.$_SESSION['login_user'].'")';
+			$sq = 'select count(*) as cnt from friendship where (user1_id = "'.$r2['user_id'].'" and user2_id = "'.$_SESSION['login_user'].'") or (user2_id = "'.$r2['user_id'].'" and user1_id = "'.$_SESSION['login_user'].'")';
 			$re = $bd->query($sq);
 			$r = $re->fetch_assoc();
+
 			if($r == 0)
 			{
-				$sq = 'select user_region from user where user_id = "'.$re2['user_id'].'"';
-				$re = $bd->query($sq);
-				$r = $re->fetch_assoc();
+				$sq1 = 'select user_region from user where user_id = "'.$r2['user_id'].'"';
+				$re1 = $bd->query($sq1);
+				$r1 = $re1->fetch_assoc();
 
 				$sq3 = 'select user_region from user where user_id = "'.$_SESSION['login_user'].'"';
 				$re3 = $bd->query($sq3);
 				$r3 = $re3->fetch_assoc();
-				if($r['user_region'] == $r3['user_region'])
+				if($r1['user_region'] == $r3['user_region'])
 				{
-					array_push($user2, $re['user_id']);
+					array_push($myarray, $r2['user_id']);
+
 				}
 			}
 	}
-		// for(int $i = 0; $i < count($user2); $i++)
+
+		// for(int $i = 0; $i < count($myarray); $i++)
 		// {
 		// 	$sql3 = 'select * from user where user_id = "'.$user[$i].'"';
 		// 	$result3 = $bd->query($sql3);
@@ -250,10 +254,13 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
 							<p class="lead"> Meet New Friends! </p>
 
 							<?php
-
-							for(int $i = 0; $i < count($user2); $i++)
+							if(isset($myarray))
 							{
-								$sql3 = 'select * from user where user_id = "'.$user[$i].'"';
+
+
+							foreach($myarray as $my)
+							{
+								$sql3 = 'select * from user where user_id = "'.$my.'"';
 								$result3 = $bd->query($sql3);
 
 							while($row2 = $result3->fetch_assoc())
@@ -270,12 +277,15 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./se
 							<a href="user.php?id=<?php echo $row2['user_id']?>" class="btn btn-primary">More about &rarr;</a>
 							</div>
 							<div class="card-footer text-muted">
-							Live in <?php echo $row2['user_region']?>, <?php echo $row['user_country']?>
+							Live in <?php echo $row2['user_region']?>, <?php echo $row2['user_country']?>
 							</div>
 							</div>
 							<?php
 							}
 							}
+						}else {
+							echo 'why??';
+						}
 
 							?>
 

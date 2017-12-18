@@ -24,7 +24,7 @@
     <div class="card-body">
       <div class="input-group">
         <form class="form-control" action="./search_friend.php" method="get">
-        <input type="text" name="seachFriend" class="form-control" placeholder="Search for friends" value="<?php echo isset($searchFriend)?$searchFriend:null?>">
+        <input type="text" name="searchFriend" class="form-control" placeholder="Search for friends" value="<?php echo isset($searchFriend)?$searchFriend:null?>">
         <span class="input-group-btn">
           <button class="btn btn-secondary" type="submit">Go!</button>
         </span>
