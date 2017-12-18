@@ -51,24 +51,38 @@ $r = $re->fetch_assoc();
 
 $friend = $r['cnt']; //전체 게시글의 수
 
-if($friend == 0)
+if($id != $_SESSION['login_user'])
 {
-	if($cate_id!=1)
+	if($friend == 0)
 	{
-	  $sql = 'select count(*) as cnt from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and post_lock = 2)';
+		if($cate_id!=1)
+		{
+		  $sql = 'select count(*) as cnt from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and post_lock = 2)';
+		}
+		else {
+		  $sql = 'select count(*) as cnt from post'. $searchSql.' (user_id = "'.$id.'" and post_lock = 2)';
+		}
 	}
 	else {
-	  $sql = 'select count(*) as cnt from post'. $searchSql.' (user_id = "'.$id.'" and post_lock = 2)';
+		if($cate_id!=1)
+		{
+		  $sql = 'select count(*) as cnt from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and (post_lock = 2 or post_lock = 1))';
+			}
+		else {
+			$sql = 'select count(*) as cnt from post'. $searchSql.' (user_id = "'.$id.'" and (post_lock = 2 or post_lock = 1))';
+		}
 	}
 }
 else {
-	if($cate_id!=1)
-	{
-	  $sql = 'select count(*) as cnt from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'" and (post_lock = 2 or post_lock = 1))';
-		}
-	else {
-		$sql = 'select count(*) as cnt from post'. $searchSql.' (user_id = "'.$id.'" and (post_lock = 2 or post_lock = 1))';
-	}
+
+		if($cate_id!=1)
+		{
+			$sql = 'select count(*) as cnt from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'")';
+			}
+		else {
+			$sql = 'select count(*) as cnt from post'. $searchSql.' (user_id = "'.$id.'")';
+}
+
 }
 	/* 검색 끝 */
 
@@ -169,6 +183,8 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./us
 		$currentLimit = ($onePage * $page) - $onePage; //몇 번째의 글부터 가져오는지
 		$sqlLimit = ' limit ' . $currentLimit . ', ' . $onePage; //limit sql 구문
 
+		if($id != $_SESSION['login_user'])
+		{
 		if($friend == 0)
 		{
 			if($cate_id!=1)
@@ -195,6 +211,20 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./us
 
 			}
 		}
+	}
+	else {
+		if($cate_id!=1)
+		{
+			$sql = 'select * from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'")';
+			$sql2 = 'select * from post' . $searchSql . ' (post_theme = "'.$cate_id.'" and user_id = "'.$id.'")';
+		}
+		else {
+			$sql = 'select * from post'. $searchSql.' (user_id = "'.$id.'")';
+			$sql2 = 'select * from post'. $searchSql.' (user_id = "'.$id.'")';
+
+		}
+	}
+
 
 		$result = $bd->query($sql);
 		$result2 = $bd->query($sql2);
@@ -274,12 +304,31 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./us
             </div>
             <div class="card-footer text-muted">
               Posted on <?php echo $row['post_date']?>
-            </div>
-          </div>
-          <?php
-       	          }
-       					}
-       	        ?>
+
+							<? if($row['post_lock'] == 0)
+							{
+								?>
+								 [Only Me]
+								<?
+							}
+							else if($row['post_lock'] == 1)
+							{
+								?>
+								 [Friends]
+								<?
+							}
+							else {
+								?>
+								 [Public]
+								<?
+							}
+							?>
+						</div>
+					</div>
+					<?php
+									}
+								}
+								?>
 
 
 

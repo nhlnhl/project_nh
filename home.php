@@ -236,6 +236,24 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./ho
             </div>
             <div class="card-footer text-muted">
               Posted on <?php echo $row['post_date']?>
+							<? if($row['post_lock'] == 0)
+							{
+								?>
+								 [Only Me]
+								<?
+							}
+							else if($row['post_lock'] == 1)
+							{
+								?>
+								 [Friends]
+								<?
+							}
+							else {
+								?>
+								 [Public]
+								<?
+							}
+							?>
             </div>
           </div>
           <?php
