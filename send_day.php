@@ -9,15 +9,18 @@
       $content = addslashes($_POST['texteditor']);
       $marker = addslashes($_POST['markers']);
 
-      $sql = "SELECT COUNT(*) + 1 AS cnt FROM post";
+      $sql = "SELECT COUNT(*) AS cnt FROM post";
       $result = mysqli_query($bd, $sql);
       $row = mysqli_fetch_assoc($result);
       $post_id = $row['cnt'];
 
-      $sql = "INSERT INTO day(post_id, day_date, day_country, day_money, day_content) VALUES ($post_id, $date, '{$country}', $money, '{$content}')";
+      $sql = "INSERT INTO day(post_id, day_date, day_country, day_money, day_content) VALUES ($post_id, '{$date}', '{$country}', $money, '{$content}')";
       $send = mysqli_query($bd, $sql);
 
-      $sql = "SELECT COUNT(*) + 1 AS cnt FROM day";
+      if(!$send)
+        echo "fail day";
+
+      $sql = "SELECT COUNT(*) AS cnt FROM day";
       $result = mysqli_query($bd, $sql);
       $row = mysqli_fetch_assoc($result);
       $itinerary_id = $row['cnt'];
@@ -35,6 +38,6 @@
         }
       }
       else
-        echo "fail";
+        echo "fail marker";
     }
 ?>

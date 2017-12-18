@@ -144,19 +144,6 @@ if(!isset($_SESSION['login_user'])) {
                       //elClickedObj.form.submit();
                   } catch(e) {
                   }
-                  /*
-                  var markers = new Array();
-
-                  for(var i = 0; i < count; i++)
-                  {
-                    var lat = marker[i].position.latLng;
-                    var lng = marker[i].position.latLng;
-                    var name = marker[i].title;
-                    var obj = {"lat": lat.toString(), "lng": lng.toString(), "name": name.toString()};
-                    markers[i] = obj;
-                  }
-                  */
-                  //day_form.markers.value = JSON.stringify(markers);
               }
 
               function pasteHTML(filepath) {
