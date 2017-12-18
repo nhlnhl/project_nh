@@ -100,65 +100,7 @@ if(!isset($_SESSION['login_user'])) {
           </form>
         </div>
 
-        <div class="col-md-4">
-
-          <!-- Side Widget -->
-          <div class="card my-4">
-            <h5 class="card-header"><?php echo $_SESSION['login_user']; ?></h5>
-            <div class="card-body">
-              <label>Welcome, <?php echo $_SESSION['login_user']; ?>!</label>
-            </div>
-          </div>
-
-          <!-- Search Widget -->
-          <div class="card my-4">
-            <h5 class="card-header">Search</h5>
-            <div class="card-body">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for...">
-                <span class="input-group-btn">
-                  <button class="btn btn-secondary" type="button">Go!</button>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Categories Widget -->
-          <div class="card my-4">
-            <h5 class="card-header">Categories</h5>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-lg-6">
-                  <ul class="list-unstyled mb-0">
-                    <li>
-                      <a href="#">Okinawa</a>
-                    </li>
-                    <li>
-                      <a href="#">Hongkong</a>
-                    </li>
-                    <li>
-                      <a href="#">Friends</a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-lg-6">
-                  <ul class="list-unstyled mb-0">
-                    <li>
-                      <a href="#">Photo</a>
-                    </li>
-                    <li>
-                      <a href="#">Kota Kinabalu</a>
-                    </li>
-                    <li>
-                      <a href="#">Ocean</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
+  <?php include("aside.php"); ?>
 
       </div>
       <!-- /.row -->
@@ -166,13 +108,7 @@ if(!isset($_SESSION['login_user'])) {
     </div>
     <!-- /.container -->
 
-    <!-- Footer -->
-    <footer class="py-5 bg-dark">
-      <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
-      </div>
-      <!-- /.container -->
-    </footer>
+	  <?php include("footer.php"); ?>
 
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>

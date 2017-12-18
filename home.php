@@ -229,14 +229,6 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./ho
           <!-- Blog Post -->
           <div class="card mb-4 my-4">
 
-            <img class="card-img-top" src="<?php if($row['post_img']==NULL)		{ echo
-							http://placehold.it/750x300 ?>
-							<?php
-						}
-						else {
-							echo $row['post_img']
-						}
-						?>	" alt="Card image cap">			
             <div class="card-body">
               <h2 class="card-title"><?php echo $row['post_title']?></h2>
               <p class="card-text"><?php echo substr($row['post_content'], 0, 50)?></p>
@@ -261,92 +253,10 @@ $paging .= '<li class="page page_next page-item"><a class="page-link" href="./ho
 
         </div>
 
-        <!-- Sidebar Widgets Column -->
-        <div class="col-md-4">
+  <?php include("aside.php"); ?>
 
-          <!-- Side Widget -->
-          <div class="card my-4">
-            <h5 class="card-header"><?php echo $_SESSION['login_user']; ?></h5>
-            <div class="card-body">
-              <div class="row">
-                <div class="col">
-                  <label>Welcome, <?php echo $_SESSION['login_user']; ?>!</label>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <a class="btn btn-primary" href="write.php">Write</a>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- Search Widget -->
-          <div class="card my-4">
-            <h5 class="card-header">Search Friends</h5>
-						<div class="card-body">
-							<div class="input-group">
-								<form class="form-control" action="./search_friend.php" method="get">
-								<input type="text" name="seachFriend" class="form-control" placeholder="Search for friends" value="<?php echo isset($searchFriend)?$searchFriend:null?>">
-								<span class="input-group-btn">
-									<button class="btn btn-secondary" type="submit">Go!</button>
-								</span>
-						</form>
-							</div>
-						</div>
-          </div>
-
-          <!-- Search Widget -->
-          <div class="card my-4" class="searchBox">
-            <h5 class="card-header">Search Posts</h5>
-            <div class="card-body">
-              <div class="input-group">
-                    <form class="form-control" action="./home.php" method="get">
-                    <input type="text" name="searchText" class="form-control" placeholder="Search for posts" value="<?php echo isset($searchText)?$searchText:null?>">
-                    <span class="input-group-btn">
-                      <button class="btn btn-secondary" type="submit">Go!</button>
-                    </span>
-                </form>
-              </div>
-            </div>
-            <?php
-            $cate_sql = mysqli_query($bd,"SELECT * FROM theme ORDER BY post_theme");
-            $index = 'home.php';
-            ?>
-          <!-- Categories Widget -->
-          <div class="card my-4">
-            <h5 class="card-header">Categories</h5>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-lg-6">
-                  <ul class="list-unstyled mb-0">
-                    <?php
-                   while($cate_row = mysqli_fetch_array($cate_sql))
-                   {
-                     $bo_type = $cate_row['post_theme'];
-                     echo "<li> <a href=$index?cate_id=$bo_type>" . $cate_row['theme_name'] . "</a></li>";
-                   }?>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-      <!-- /.row -->
-
-    </div>
-    <!-- /.container -->
-
-    <!-- Footer -->
-    <footer class="py-5 bg-dark">
-      <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Project NH 2017</p>
-      </div>
-      <!-- /.container -->
-    </footer>
-
+	  <?php include("footer.php"); ?>
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
